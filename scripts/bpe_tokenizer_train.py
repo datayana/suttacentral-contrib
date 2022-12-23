@@ -1,3 +1,8 @@
+import os
+import sys
+import argparse
+import logging
+
 from tokenizers import Tokenizer
 from tokenizers.models import BPE
 from tokenizers.trainers import BpeTrainer
@@ -8,6 +13,10 @@ from tokenizers.pre_tokenizers import (
     Sequence,
 )
 from tokenizers.normalizers import Lowercase
+from tokenizers.processors import BertProcessing
+
+from suttacentral.contrib.data.samples import PALI_CATCHPHRASES
+
 
 def main():
     """Parse args and run script"""
@@ -47,8 +56,7 @@ def main():
     logger.addHandler(handler)
 
     # Initialize
-    # tokenizer = ByteLevelBPETokenizer(lowercase=True)
-    tokenizer = Tokenizer(BPE(unk_token="[UNK]"))
+    tokenizer = Tokenizer(BPE(unk_token="<unk>"))
     tokenizer.pre_tokenizer = Sequence(
         [
             Whitespace(),
@@ -73,14 +81,13 @@ def main():
     if args.save:
         tokenizer.save(args.save)
 
-    with open("data/catchphrases/donotgoby.txt", "r", encoding="utf-8") as in_file:
-        catchphrase = in_file.read()
-
-        print("***")
-        print(catchphrase)
-
+    # Test in stdout
+    print("Here's the encoding of a couple sample catchphrases:")
+    for catchphrase in PALI_CATCHPHRASES:
+        print("\n*** " + catchphrase)
         encoding = tokenizer.encode(catchphrase)
-        print(encoding.tokens)
+        print("> " + str(encoding.tokens))
+
 
 if __name__ == "__main__":
     main()

@@ -62,6 +62,16 @@ def main():
             if re.match("[0-9\-]+", pali_text):
                 continue
 
+            # remove "[N]"
+            pali_text = re.sub(r"\[[0-9]+\]", "", pali_text)
+
+            # remove training ".N"
+            pali_text = re.sub(r" \.[0-9]+$", "", pali_text)
+
+            # if after that, line is empty, pass
+            if not pali_text:
+                continue
+
             out_file.write(pali_text)
             out_file.write("\n")
 

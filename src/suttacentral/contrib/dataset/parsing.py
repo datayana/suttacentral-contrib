@@ -5,6 +5,7 @@ import json
 from .types import SCDataFilePath
 from .types import SCTextData
 from typing import List
+import re
 
 
 def parse_sc_file(sc_file: SCDataFilePath) -> List[SCTextData]:
