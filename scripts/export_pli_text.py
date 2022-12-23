@@ -19,7 +19,7 @@ def main():
         help="Path to the suttacentral/sc-data clone root.",
     )
     parser.add_argument(
-        "--bpe_train_file",
+        "--export_train_file",
         type=str,
         required=True,
         help="Path to store the file to train BPE.",
@@ -45,8 +45,8 @@ def main():
 
     sc_flat_entries = sc_get_flat_entries(args.sc_root_clone)
 
-    logger.info(f"Saving data to {args.bpe_train_file}")
-    with open(args.bpe_train_file, "w", encoding="utf-8") as out_file:
+    logger.info(f"Saving data to {args.export_train_file}")
+    with open(args.export_train_file, "w", encoding="utf-8") as out_file:
         for entry in sc_flat_entries:
             # pass titles or subtitles
             if entry.paragraph_id.startswith("0"):

@@ -25,7 +25,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
     parser.add_argument(
-        "--bpe_train_file",
+        "--train_file",
         type=str,
         required=True,
         help="Path to the file to train BPE.",
@@ -83,7 +83,7 @@ def main():
     )
 
     # Train the tokenizer
-    tokenizer.train([args.bpe_train_file], trainer)
+    tokenizer.train([args.train_file], trainer)
 
     # Save
     if args.save_json:
