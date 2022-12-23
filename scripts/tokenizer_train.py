@@ -1,3 +1,4 @@
+"""Train a BPE tokenizer on a Pali text from Sutta Central using HuggingFace."""
 import os
 import sys
 import argparse
@@ -88,6 +89,7 @@ def main():
     if args.save_json:
         tokenizer.save(args.save_json)
     if args.save_model:
+        os.makedirs(args.save_model, exist_ok=True)
         tokenizer.model.save(args.save_model)
 
     # Test in stdout
