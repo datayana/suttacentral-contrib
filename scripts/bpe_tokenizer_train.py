@@ -30,11 +30,18 @@ def main():
         help="Path to the file to train BPE.",
     )
     parser.add_argument(
-        "--save",
+        "--save_json",
         type=str,
         required=False,
         default=None,
-        help="Path to save the tokenizer as json file.",
+        help="Path to a file where to export the tokeniser in json format.",
+    )
+    parser.add_argument(
+        "--save_model",
+        type=str,
+        required=False,
+        default=None,
+        help="Path to a directory to save the tokenizer model (vocab.json, merges.txt).",
     )
     parser.add_argument(
         "--verbose",
@@ -78,8 +85,10 @@ def main():
     tokenizer.train([args.bpe_train_file], trainer)
 
     # Save
-    if args.save:
-        tokenizer.save(args.save)
+    if args.save_json:
+        tokenizer.save(args.save_json)
+    if args.save_model:
+        tokenizer.model.save(args.save_model)
 
     # Test in stdout
     print("Here's the encoding of a couple sample catchphrases:")
