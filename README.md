@@ -1,13 +1,12 @@
 # suttacentral-contrib
-
 Contrib code to parse and analyze SuttaCentral data
 
 
 ## Create python environment
 
 ```bash
-conda env create --file conda.yaml
-conda activate palibert
+conda env create --file conda_cpu.yaml
+conda activate palibertcpu
 ```
 
 ## Get the raw data
