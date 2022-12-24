@@ -1,13 +1,13 @@
 # suttacentral-contrib
+
 Contrib code to parse and analyze SuttaCentral data
 
 
 ## Create python environment
 
 ```bash
-conda create --name palibert python=3.9
+conda env create --file conda.yaml
 conda activate palibert
-python -m pip install -r ./requirements.txt
 ```
 
 ## Get the raw data
@@ -27,6 +27,11 @@ python -m pip install -r ./requirements.txt
 
 ## Train MLM model "palibert"
 
+```
+mkdir data
+mkdir models/palibert/
+```
+
 ```bash
 python ./scripts/export_pli_text.py --sc_root_clone ../sc-data --export_train_file ./data/bpe_train_file.txt
 ```
@@ -36,9 +41,9 @@ python ./scripts/tokenizer_train.py --train_file ./data/bpe_train_file.txt --sav
 ```
 
 ```bash
+mkdir models/palibert/
 python ./scripts/export_model_config.py --model_name roberta-base --save_config ./models/palibert/
 ```
-
 
 ```bash
 wget https://raw.githubusercontent.com/huggingface/transformers/06886d5a684228a695b29645993b3be55190bd9c/examples/pytorch/language-modeling/run_mlm.py -O scripts/run_mlm.py
