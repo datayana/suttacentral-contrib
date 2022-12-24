@@ -35,13 +35,21 @@ python ./scripts/export_pli_text.py --sc_root_clone ../sc-data --export_train_fi
 python ./scripts/tokenizer_train.py --train_file ./data/bpe_train_file.txt --save_model ./models/palibert/
 ```
 
+```bash
+python ./scripts/export_model_config.py --model_name roberta-base --save_config ./models/palibert/
+```
+
+
+```bash
+wget https://raw.githubusercontent.com/huggingface/transformers/06886d5a684228a695b29645993b3be55190bd9c/examples/pytorch/language-modeling/run_mlm.py -O scripts/run_mlm.py
+```
+
 ```
 python .\scripts\run_mlm.py `
-    --output_dir ./models/palibert/small-v1 `
+    --output_dir ./models/palibert/small `
     --model_type roberta-base `
-    --mlm `
-    --config_name ./models/palibert/small `
-    --tokenizer_name ./models/palibert/small `
+    --config_name ./models/palibert/ `
+    --tokenizer_name ./models/palibert/ `
     --max_seq_length 512 `
     --do_train `
     --learning_rate 1e-4 `
@@ -50,5 +58,5 @@ python .\scripts\run_mlm.py `
     --save_steps 2000 `
     --per_gpu_train_batch_size 16 `
     --seed 42 `
-    --train_data_file .\data\pali_for_bpe.txt
+    --train_file .\data\bpe_train_file.txt
 ```
