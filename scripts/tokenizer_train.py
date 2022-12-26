@@ -38,6 +38,13 @@ def main():
         help="Path to a file where to export the tokeniser in json format.",
     )
     parser.add_argument(
+        "--save_as_pretrained",
+        type=str,
+        required=False,
+        default=None,
+        help="Path to a file to save the tokenizer as Fast object.",
+    )
+    parser.add_argument(
         "--save_model",
         type=str,
         required=False,
@@ -76,10 +83,10 @@ def main():
 
     # Create trainer
     trainer = BpeTrainer(
-        vocab_size=40000,
+        vocab_size=30000,
         min_frequence=2,
         show_progress=True,
-        special_tokens=["<s>", "<pad>", "</s>", "<unk>", "<mask>"],
+        special_tokens=["<unk>", "<mask>", "<s>", "</s>", "<pad>", "<sep>", "<cls>"],
     )
 
     # Train the tokenizer
@@ -91,6 +98,18 @@ def main():
     if args.save_model:
         os.makedirs(args.save_model, exist_ok=True)
         tokenizer.model.save(args.save_model)
+    if args.save_as_pretrained:
+        from transformers import PreTrainedTokenizerFast
+        fast_tokenizer = PreTrainedTokenizerFast(tokenizer_object=tokenizer)
+        fast_tokenizer.mask_token = "<mask>"
+        fast_tokenizer.pad_token = "<pad>"
+        fast_tokenizer.unk_token = "<unk>"
+        fast_tokenizer.bos_token = "<s>"
+        fast_tokenizer.eos_token = "</s>"
+        fast_tokenizer.sep_token = "<sep>"
+        fast_tokenizer.cls_token = "<cls>"
+        fast_tokenizer.save_pretrained(args.save_as_pretrained)
+
 
     # Test in stdout
     print("Here's the encoding of a couple sample catchphrases:")

@@ -36,24 +36,24 @@ python ./scripts/export_pli_text.py --sc_root_clone ../sc-data --export_train_fi
 ```
 
 ```bash
-python ./scripts/tokenizer_train.py --train_file ./data/bpe_train_file.txt --save_model ./models/palibert/
+python ./scripts/tokenizer_train.py --train_file ./data/bpe_train_file.txt --save_as_pretrained ./models/palibert/
 ```
 
 ```bash
 mkdir models/palibert/
-python ./scripts/export_model_config.py --model_name roberta-base --save_config ./models/palibert/
+python ./scripts/export_model_config.py --model_name albert-base-v2 --save_config ./models/palibert/
 ```
 
 ```bash
-wget https://raw.githubusercontent.com/huggingface/transformers/06886d5a684228a695b29645993b3be55190bd9c/examples/pytorch/language-modeling/run_mlm.py -O scripts/run_mlm.py
+curl https://raw.githubusercontent.com/huggingface/transformers/06886d5a684228a695b29645993b3be55190bd9c/examples/pytorch/language-modeling/run_mlm.py -o scripts/run_mlm.py
 ```
 
 ```
 python .\scripts\run_mlm.py `
-    --output_dir ./models/palibert/small `
-    --model_type roberta-base `
-    --config_name ./models/palibert/ `
-    --tokenizer_name ./models/palibert/ `
+    --output_dir ./models/palibert/v1/ `
+    --model_type albert-base-v2 `
+    --config_name ./models/palibert/config/ `
+    --tokenizer_name ./models/palibert/config/ `
     --max_seq_length 512 `
     --do_train `
     --learning_rate 1e-4 `
