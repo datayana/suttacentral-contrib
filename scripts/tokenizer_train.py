@@ -13,8 +13,11 @@ from tokenizers.pre_tokenizers import (
     Whitespace,
     Sequence,
 )
+from tokenizers import AddedToken
 from tokenizers.normalizers import Lowercase
 from tokenizers.processors import BertProcessing
+from transformers import PreTrainedTokenizerFast
+from tokenizers.processors import TemplateProcessing
 
 from suttacentral.contrib.data.samples import PALI_CATCHPHRASES
 
@@ -86,11 +89,30 @@ def main():
         vocab_size=30000,
         min_frequence=2,
         show_progress=True,
-        special_tokens=["<unk>", "<mask>", "<s>", "</s>", "<pad>", "<sep>", "<cls>"],
+        special_tokens=["<pad>", "<unk>", "[CLS]", "[SEP]", AddedToken("[MASK]", lstrip=True)],
     )
 
     # Train the tokenizer
     tokenizer.train([args.train_file], trainer)
+
+    tokenizer.post_processor = TemplateProcessing(
+        single="[CLS] $A [SEP]",
+        pair="[CLS] $A [SEP] $B:1 [SEP]:1",
+        special_tokens=[
+            ("[CLS]", tokenizer.token_to_id("[CLS]")),
+            ("[SEP]", tokenizer.token_to_id("[SEP]")),
+        ],
+    )
+
+    # convert to transformers tokenizer
+    fast_tokenizer = PreTrainedTokenizerFast(tokenizer_object=tokenizer)
+    fast_tokenizer.mask_token = "[MASK]"
+    fast_tokenizer.pad_token = "<pad>"
+    fast_tokenizer.unk_token = "<unk>"
+    fast_tokenizer.bos_token = "[CLS]"
+    fast_tokenizer.eos_token = "[SEP]"
+    fast_tokenizer.sep_token = "[SEP]"
+    fast_tokenizer.cls_token = "[CLS]"
 
     # Save
     if args.save_json:
@@ -99,15 +121,6 @@ def main():
         os.makedirs(args.save_model, exist_ok=True)
         tokenizer.model.save(args.save_model)
     if args.save_as_pretrained:
-        from transformers import PreTrainedTokenizerFast
-        fast_tokenizer = PreTrainedTokenizerFast(tokenizer_object=tokenizer)
-        fast_tokenizer.mask_token = "<mask>"
-        fast_tokenizer.pad_token = "<pad>"
-        fast_tokenizer.unk_token = "<unk>"
-        fast_tokenizer.bos_token = "<s>"
-        fast_tokenizer.eos_token = "</s>"
-        fast_tokenizer.sep_token = "<sep>"
-        fast_tokenizer.cls_token = "<cls>"
         fast_tokenizer.save_pretrained(args.save_as_pretrained)
 
 
@@ -115,8 +128,9 @@ def main():
     print("Here's the encoding of a couple sample catchphrases:")
     for catchphrase in PALI_CATCHPHRASES:
         print("\n*** " + catchphrase)
-        encoding = tokenizer.encode(catchphrase)
-        print("> " + str(encoding.tokens))
+        print(tokenizer.encode(catchphrase).tokens)
+        print(fast_tokenizer.encode(catchphrase))
+        # print("> " + str(encoding.tokens))
 
 
 if __name__ == "__main__":
