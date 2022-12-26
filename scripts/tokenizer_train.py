@@ -89,7 +89,7 @@ def main():
         vocab_size=30000,
         min_frequence=2,
         show_progress=True,
-        special_tokens=["<pad>", "<unk>", "[CLS]", "[SEP]", AddedToken("[MASK]", lstrip=True)],
+        special_tokens=["<pad>", "<unk>", "[CLS]", "[SEP]", AddedToken("[MASK]", lstrip=True, normalized=False)],
     )
 
     # Train the tokenizer
@@ -105,14 +105,22 @@ def main():
     )
 
     # convert to transformers tokenizer
-    fast_tokenizer = PreTrainedTokenizerFast(tokenizer_object=tokenizer)
-    fast_tokenizer.mask_token = "[MASK]"
-    fast_tokenizer.pad_token = "<pad>"
-    fast_tokenizer.unk_token = "<unk>"
-    fast_tokenizer.bos_token = "[CLS]"
-    fast_tokenizer.eos_token = "[SEP]"
-    fast_tokenizer.sep_token = "[SEP]"
-    fast_tokenizer.cls_token = "[CLS]"
+    fast_tokenizer = PreTrainedTokenizerFast(
+        tokenizer_object=tokenizer,
+        model_max_length=512,
+        mask_token=AddedToken("[MASK]", lstrip=True, normalized=False),
+        pad_token = "<pad>",
+        unk_token = "<unk>",
+        bos_token = "[CLS]",
+        eos_token = "[SEP]",
+        sep_token = "[SEP]",
+        cls_token = "[CLS]",
+        name_or_path="palibert",
+        remove_space=True,
+        keep_accents=True,
+        do_lower_case=True,
+        special_tokens_map_file=None
+    )
 
     # Save
     if args.save_json:
