@@ -36,15 +36,16 @@ python ./scripts/export_pli_text.py --sc_root_clone ../sc-data --export_train_fi
 ```
 
 ```bash
-python ./scripts/tokenizer_train.py --train_file ./data/bpe_train_file.txt --save_as_pretrained ./models/palibert/
+python ./scripts/tokenizer_train.py --train_file ./data/bpe_train_file.txt --save_as_pretrained ./models/palibert/config/
 ```
 
 ```bash
 mkdir models/palibert/
-python ./scripts/export_model_config.py --model_name albert-base-v2 --save_config ./models/palibert/
+python ./scripts/export_model_config.py --model_name albert-base-v2 --save_config ./models/palibert/config/
 ```
 
 ```bash
+# copy into local working dir
 curl https://raw.githubusercontent.com/huggingface/transformers/06886d5a684228a695b29645993b3be55190bd9c/examples/pytorch/language-modeling/run_mlm.py -o scripts/run_mlm.py
 ```
 
