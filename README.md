@@ -36,7 +36,7 @@ python ./scripts/export_pli_text.py --sc_root_clone ../sc-data --export_train_fi
 ```
 
 ```bash
-python ./scripts/create_palibert_base_config.py --output_dir ./models/palibert-base/config --train_file ./data/bpe_train_file_v2.txt
+python ./scripts/create_palibert_base_config.py --output_dir ./models/palibert-base/config --train_file ./data/bpe_train_file.txt
 ```
 
 

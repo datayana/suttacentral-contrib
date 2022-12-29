@@ -49,6 +49,8 @@ def main():
     tokenizer_stats = {"line_len": [], "last_char": [], "id_len": []}
 
     logger.info(f"Saving data to {args.export_train_file}")
+    os.makedirs(os.path.dirname(args.export_train_file), exist_ok=True)
+
     with open(args.export_train_file, "w", encoding="utf-8") as out_file:
         pali_full_line = ""
         previous_paragraph_id = None

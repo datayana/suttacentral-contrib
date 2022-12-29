@@ -14,7 +14,7 @@ def sc_get_flat_entries(sc_clone_root: str) -> List[SCTextData]:
 
     all_files = discover_all_sc_files(sc_clone_root)
 
-    logging.getLogger(__name__).info(f"Discovered {len(all_files)} files total.")
+    logging.getLogger(__name__).info(f"Discovered {len(all_files)} files total, now starting parsing...")
 
     for sc_file in tqdm(all_files):
         sc_text_entries.extend(parse_sc_file(sc_file))
