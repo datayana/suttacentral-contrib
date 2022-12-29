@@ -9,14 +9,13 @@ inputs:
   train_file:
     type: uri_file
     path: azureml:bpe_train_data@latest # register using data/bpe_train.yml
-    # path: ../../../data/fake_train_file.txt
   model_config:
     type: uri_folder
-    path: ../../../models/palibert/config/
+    path: ../../../models/palibert-base/config/
 
   # training params
   learning_rate: 1e-5
-  epochs: 10
+  epochs: 50
   batch_size: 16
 
 outputs:
@@ -31,6 +30,7 @@ command: >-
   --config_name ${{inputs.model_config}} 
   --tokenizer_name ${{inputs.model_config}} 
   --train_file ${{inputs.train_file}} 
+  --line_by_line 
   --do_train 
   --do_eval 
   --validation_file ${{inputs.train_file}} 
@@ -41,9 +41,9 @@ command: >-
   --gradient_accumulation_steps 4 
   --max_seq_length 512 
   --output_dir ${{outputs.checkpoints}} 
-  --save_total_limit 2 
-  --save_steps 100 
-  --logging_steps 100 
+  --save_total_limit 10 
+  --save_steps 5000 
+  --logging_steps 5000 
   --seed 42 
 
 environment: azureml:palibert@latest
