@@ -15,7 +15,7 @@ inputs:
 
   # training params
   learning_rate: 1e-5
-  epochs: 50
+  epochs: 500
   batch_size: 16
 
 outputs:
