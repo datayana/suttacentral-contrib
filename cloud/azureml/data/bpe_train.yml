@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: bpe_train_data
+type: uri_file
+path: ../../../data/bpe_train_file.txt
