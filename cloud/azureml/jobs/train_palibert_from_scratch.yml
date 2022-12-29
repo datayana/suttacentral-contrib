@@ -22,7 +22,7 @@ outputs:
   checkpoints:
     type: uri_folder
 
-code: ./src
+code: ../../../scripts/
 
 command: >-
   python ./run_mlm.py 
