@@ -3,6 +3,7 @@ import argparse
 from transformers import AutoTokenizer
 from transformers import pipeline
 
+
 def main():
     """Parse args and run script"""
     # create parser for cli args
@@ -27,9 +28,7 @@ def main():
 
     # create a fill mask pipeline
     fill_mask = pipeline(
-        "fill-mask",
-        model=args.model,
-        tokenizer=args.tokenizer or args.model
+        "fill-mask", model=args.model, tokenizer=args.tokenizer or args.model
     )
 
     # load separately to show off
@@ -39,15 +38,16 @@ def main():
         "Evaṁ me [MASK]—",
         "Evaṁ [MASK] sutaṁ—",
         "[MASK] me sutaṁ—",
-        "Yaṁ kiñci samudayadhammaṁ sabbaṁ taṁ [MASK]."
+        "Yaṁ kiñci samudayadhammaṁ sabbaṁ taṁ [MASK].",
     ]
 
     for case in test_cases:
         print(f"*** {case}")
-        print("tokenizer output> "+str(tokenizer(case)))
+        print("tokenizer output> " + str(tokenizer(case)))
         predictions = fill_mask(case)
         for result in predictions:
-            print("pred> "+str(result))
+            print("pred> " + str(result))
+
 
 if __name__ == "__main__":
     main()
